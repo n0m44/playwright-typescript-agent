@@ -26,8 +26,8 @@ class RAG {
     }
 
     this.embeddings = new OllamaEmbeddings({
-      model: 'nomic-embed-text',
-      baseUrl: 'http://localhost:11434',
+      model: env.RAG_OLLAMA_MODEL,
+      baseUrl: env.RAG_OLLAMA_BASE_URL,
       maxConcurrency: this.BATCH_SIZE,
     });
 
@@ -51,7 +51,7 @@ class RAG {
         '.tsx': (path) => new TextLoader(path),
         '.js': (path) => new TextLoader(path),
         '.py': (path) => new TextLoader(path),
-        '.json': (path) => new JSONLoader(path),
+        // '.json': (path) => new JSONLoader(path),
       },
       true
     );
@@ -83,9 +83,9 @@ class RAG {
     );
     logger.info(
       'Отсортированные файлы:' +
-        `\n\tjs/ts=${sortedDocs.jsDocs.length}` +
-        `\n\tpy=${sortedDocs.pythonDocs.length}` +
-        `\n\tother=${sortedDocs.otherDocs.length}`
+      `\n\tjs/ts=${sortedDocs.jsDocs.length}` +
+      `\n\tpy=${sortedDocs.pythonDocs.length}` +
+      `\n\tother=${sortedDocs.otherDocs.length}`
     );
 
     return sortedDocs;
@@ -118,8 +118,7 @@ class RAG {
     for (let i = 0; i < chunks.length; i += this.BATCH_SIZE) {
       const batch = chunks.slice(i, i + this.BATCH_SIZE);
       logger.info(
-        `Обработка пакета чанков: ${i} - ${Math.min(i + this.BATCH_SIZE, chunks.length)} из ${
-          chunks.length
+        `Обработка пакета чанков: ${i} - ${Math.min(i + this.BATCH_SIZE, chunks.length)} из ${chunks.length
         }`
       );
 
