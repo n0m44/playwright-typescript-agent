@@ -21,7 +21,7 @@ import { HumanMessage } from 'langchain';
 
   const result = await agent.invoke({
     messages: new HumanMessage(
-      'Используя только RAG расскажи, что ты знаешь о данном тебе репозитории в работу. Например, как создать в CRM событие'// await loadPrompt('invoke', 'executor', 'ATF PATHS=' + getTargetAQADirPaths().toString())
+      await loadPrompt('invoke', 'executor', 'ATF PATHS=' + getTargetAQADirPaths().toString())
     ),
   });
 })();
