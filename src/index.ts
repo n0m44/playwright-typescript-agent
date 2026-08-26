@@ -21,7 +21,7 @@ const executorAgent = createDeepAgent({
 
 const reviewerAgent = createDeepAgent({
   model: getModel(),
-  tools: [tools['useLog'], tools['useRag']],
+  tools: Object.values(tools),
   backend: new FilesystemBackend({ rootDir: process.cwd() }),
   systemPrompt: loadPrompt('system', NodeNames.REVIEWER),
   skills: getSkillsPath(),

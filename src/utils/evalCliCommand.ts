@@ -26,7 +26,16 @@ function evalCommand(command: string, timeout: number) {
 
 export default async function evalCliCommand(command: string, timeout: number) {
   logger.debug(`Evaluate: ${command}`);
-  const result = await evalCommand(command, timeout);
+  try {
+    const result = await evalCommand(command, timeout);
+    return result;
+  } catch (error: any) {
+    logger.debug(`Поймали синхронную ошибку, при выполнении: ${command}`);
+    let errorMessage = `Command failed: ${error.message}`;
+    if (error.stdout) errorMessage += `\nstdout: ${error.stdout}`;
+    if (error.stderr) errorMessage += `\nstderr: ${error.stderr}`;
+    logger.error(`Error of \`${command}\`: ${error}`);
+    return errorMessage;
+  }
 
-  return result;
 }
