@@ -105,10 +105,4 @@ async function runReviewer(state: AgentState) {
   await rag.loadRepo(getTargetAQADirPaths());
 
   await app.invoke(initialState);
-
-  // const result = await executorAgent.invoke({
-  //   messages: new HumanMessage(
-  //     await loadPrompt('invoke', 'executor', 'ATF PATHS=' + getTargetAQADirPaths().toString())
-  //   ),
-  // });
 })();
