@@ -13,7 +13,7 @@ export const UIWorkerResutlSchema = z.object({
 export type UIWorkerResult = z.infer<typeof UIWorkerResutlSchema>
 
 export const PlaneReviewerResultSchema = z.object({
-  uiWorkerFeedback: z.string().nonempty().describe('Замечания по UI пути на соответствите плану'),
+  uiWorkerFeedback: z.string().describe('Замечания по UI пути на соответствите плану'),
   isApproved: z.boolean().describe('Утверждён ли путь')
 });
 

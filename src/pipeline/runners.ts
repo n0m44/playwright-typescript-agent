@@ -8,7 +8,8 @@ import { ZodObject } from "zod";
 const promptsTemplates = {
   fixTheJSON: 'Верни нормальный JSON без markodwn обёртки и прочего',
   backResultAt: (schema: ZodObject) => `\nРезультат верни в JSON, вот Zod схема для понимания: ${JSON.stringify(schema.toJSONSchema())}`,
-  mergePrompts: (...args: string[]) => args.join('\n')
+  mergePrompts: (...args: string[]) => args.join('\n'),
+  fixFeedback: (feedback: string) => `\nПоправь замечания: \n${feedback}`
 }
 
 async function runPlanner(state: AgentState) {
@@ -36,8 +37,13 @@ async function runPlanner(state: AgentState) {
 async function runUIWorker(state: AgentState) {
   if (state.uiWorker.jsonParseError) {
     state.uiWorker.messages.push(new HumanMessage(promptsTemplates.fixTheJSON));
-  } else {
-    state.uiWorker.messages.push(new HumanMessage(loadPrompt('invoke', AgentsRoles.UI_WORKER, promptsTemplates.backResultAt(UIWorkerResutlSchema))))
+  }
+  else if (state.planReviewer.uiWorkerFeedback?.length > 1 && !state.planReviewer.isApproved) {
+    state.uiWorker.messages.push(new HumanMessage(promptsTemplates.fixFeedback(state.planReviewer.uiWorkerFeedback)));
+    state.planReviewer.uiWorkerFeedback = ""
+  }
+  else {
+    state.uiWorker.messages.push(new HumanMessage(loadPrompt('invoke', AgentsRoles.UI_WORKER, promptsTemplates.backResultAt(UIWorkerResutlSchema))));
   }
 
   const result = await agents.uiWorkerAgent.invoke({ messages: state.uiWorker.messages });
@@ -74,9 +80,22 @@ async function runPlanReviewer(state: AgentState) {
   }
 
   state.planReviewer.uiWorkerFeedback = parseResult.data.uiWorkerFeedback;
+  state.planReviewer.isApproved = parseResult.data.isApproved;
   return state;
 }
 
-function runCoder(state: AgentState) { }
+async function runCoder(state: AgentState) {
+  if (state.reviewer.coderFeedback?.length > 1 && !state.reviewer.isApproved) {
+    state.coder.messages.push(new HumanMessage(promptsTemplates.fixFeedback(state.reviewer.coderFeedback)));
+    state.reviewer.coderFeedback = ""
+  } else {
+    state.coder.messages.push(new HumanMessage(loadPrompt('invoke', AgentsRoles.CODER, promptsTemplates.backResultAt(PlaneReviewerResultSchema))))
+  }
+
+  const result = await agents.coder.invoke({ messages: state.coder.messages });
+  state.coder.messages = result.messages;
+
+  return state;
+}
 
 function runReviewer(state: AgentState) { }

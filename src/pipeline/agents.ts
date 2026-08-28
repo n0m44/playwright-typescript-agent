@@ -46,7 +46,7 @@ const reviewerAgent = createDeepAgent({
 });
 
 const agents = {
-  plannerAgent, uiWorkerAgent, coderAgent, reviewerAgent, planReviewer
+  plannerAgent, uiWorkerAgent, coder: coderAgent, reviewerAgent, planReviewer
 }
 
 export default agents
