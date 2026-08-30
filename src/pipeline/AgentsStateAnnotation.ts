@@ -1,5 +1,5 @@
-import { Annotation } from "@langchain/langgraph";
-import { AgentState } from "./types";
+import { Annotation } from '@langchain/langgraph';
+import { AgentState } from './types';
 
 const AgentsStateAnnotation = Annotation.Root({
   planner: Annotation<AgentState['planner']>({
@@ -18,6 +18,10 @@ const AgentsStateAnnotation = Annotation.Root({
     reducer: (x, y) => y ?? x,
     default: () => ({} as AgentState['reviewer']),
   }),
+  planReviewer: Annotation<AgentState['planReviewer']>({
+    reducer: (x, y) => y ?? x,
+    default: () => ({} as AgentState['planReviewer']),
+  }),
 });
 
-export default AgentsStateAnnotation
+export default AgentsStateAnnotation;

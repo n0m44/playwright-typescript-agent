@@ -1,11 +1,11 @@
-import { createDeepAgent, FilesystemBackend } from "deepagents";
-import getModel from "../model";
+import { createDeepAgent, FilesystemBackend } from 'deepagents';
+import getModel from '../model';
 import tools from '../agentTools';
-import loadPrompt from "../utils/loadPrompt";
-import { getSkillsPath } from "../utils/paths";
-import { AgentsRoles } from "./types";
+import loadPrompt from '../utils/loadPrompt';
+import { getSkillsPath } from '../utils/paths';
+import { AgentsRoles } from './types';
 
-const plannerAgent = createDeepAgent({
+const planner = createDeepAgent({
   model: getModel(),
   tools: Object.values(tools),
   backend: new FilesystemBackend({ rootDir: process.cwd() }),
@@ -13,7 +13,7 @@ const plannerAgent = createDeepAgent({
   skills: getSkillsPath(),
 });
 
-const uiWorkerAgent = createDeepAgent({
+const uiWorker = createDeepAgent({
   model: getModel(),
   tools: Object.values(tools),
   backend: new FilesystemBackend({ rootDir: process.cwd() }),
@@ -29,7 +29,7 @@ const planReviewer = createDeepAgent({
   skills: getSkillsPath(),
 });
 
-const coderAgent = createDeepAgent({
+const coder = createDeepAgent({
   model: getModel(),
   tools: Object.values(tools),
   backend: new FilesystemBackend({ rootDir: process.cwd() }),
@@ -37,7 +37,7 @@ const coderAgent = createDeepAgent({
   skills: getSkillsPath(),
 });
 
-const reviewerAgent = createDeepAgent({
+const reviewer = createDeepAgent({
   model: getModel(),
   tools: Object.values(tools),
   backend: new FilesystemBackend({ rootDir: process.cwd() }),
@@ -46,7 +46,11 @@ const reviewerAgent = createDeepAgent({
 });
 
 const agents = {
-  plannerAgent, uiWorkerAgent, coder: coderAgent, reviewerAgent, planReviewer
-}
+  planner,
+  uiWorker,
+  coder,
+  reviewer,
+  planReviewer,
+};
 
-export default agents
+export default agents;

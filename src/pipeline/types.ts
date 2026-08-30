@@ -1,9 +1,9 @@
-import { BaseMessage } from "langchain";
+import { BaseMessage } from 'langchain';
 
 export type DefaultAgentState = {
   messages: BaseMessage[];
   jsonParseError: boolean;
-}
+};
 
 export type AgentState = {
   planner: DefaultAgentState & {
@@ -11,7 +11,7 @@ export type AgentState = {
      * План по которому пойдёт ui worker
      */
     uiWorkerPrompt: string;
-  },
+  };
   uiWorker: DefaultAgentState & {
     /**
      * Путь по которому нужно пройтись, чтобы написать тест-кейс
@@ -27,7 +27,7 @@ export type AgentState = {
      * Approve пути
      */
     isApproved: boolean;
-  },
+  };
   coder: DefaultAgentState & {
     /**
      * Запрос на сбор дополнительных данных для coder
@@ -37,7 +37,8 @@ export type AgentState = {
      * Итерация запроса к uiworker'у, чтобы остановить, если слишком много
      */
     requestIteration: number;
-  }
+    isRequestSpecify: number;
+  };
   reviewer: DefaultAgentState & {
     /**
      * Замечания по ревью
@@ -51,8 +52,8 @@ export type AgentState = {
      * Итерация ревью, чтобы стопнуть работу, если слишком много попыток было
      */
     reviewIteration: number;
-  }
-}
+  };
+};
 
 export enum AgentsRoles {
   /**
@@ -72,7 +73,6 @@ export enum AgentsRoles {
   PLAN_REVIEWER = 'planreviewer',
   /**
    * Пишет pw test, структуру, если необходимо
-   * Может вернуться назад с уточнением!
    */
   CODER = 'coder',
   /**
