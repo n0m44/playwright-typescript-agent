@@ -2,25 +2,25 @@ import { Annotation } from '@langchain/langgraph';
 import { AgentState } from './types';
 
 const AgentsStateAnnotation = Annotation.Root({
-  planner: Annotation<AgentState['planner']>({
+  plannerState: Annotation<AgentState['plannerState']>({
     reducer: (x, y) => y ?? x,
-    default: () => ({} as AgentState['planner']),
+    default: () => ({} as AgentState['plannerState']),
   }),
-  uiWorker: Annotation<AgentState['uiWorker']>({
+  uiWorkerState: Annotation<AgentState['uiWorkerState']>({
     reducer: (x, y) => y ?? x,
-    default: () => ({} as AgentState['uiWorker']),
+    default: () => ({} as AgentState['uiWorkerState']),
   }),
-  coder: Annotation<AgentState['coder']>({
+  coderState: Annotation<AgentState['coderState']>({
     reducer: (x, y) => y ?? x,
-    default: () => ({} as AgentState['coder']),
+    default: () => ({} as AgentState['coderState']),
   }),
-  reviewer: Annotation<AgentState['reviewer']>({
+  reviewerState: Annotation<AgentState['reviewerState']>({
     reducer: (x, y) => y ?? x,
-    default: () => ({} as AgentState['reviewer']),
+    default: () => ({} as AgentState['reviewerState']),
   }),
-  planReviewer: Annotation<AgentState['planReviewer']>({
+  planReviewerState: Annotation<AgentState['planReviewerState']>({
     reducer: (x, y) => y ?? x,
-    default: () => ({} as AgentState['planReviewer']),
+    default: () => ({} as AgentState['planReviewerState']),
   }),
 });
 

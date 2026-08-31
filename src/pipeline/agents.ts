@@ -10,7 +10,7 @@ const planner = createDeepAgent({
   tools: Object.values(tools),
   backend: new FilesystemBackend({ rootDir: process.cwd() }),
   systemPrompt: loadPrompt('system', AgentsRoles.PLANNER),
-  skills: getSkillsPath(),
+  // skills: getSkillsPath(),
 });
 
 const uiWorker = createDeepAgent({

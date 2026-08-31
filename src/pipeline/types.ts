@@ -6,19 +6,19 @@ export type DefaultAgentState = {
 };
 
 export type AgentState = {
-  planner: DefaultAgentState & {
+  plannerState: DefaultAgentState & {
     /**
      * План по которому пойдёт ui worker
      */
     uiWorkerPrompt: string;
   };
-  uiWorker: DefaultAgentState & {
+  uiWorkerState: DefaultAgentState & {
     /**
      * Путь по которому нужно пройтись, чтобы написать тест-кейс
      */
     coderUiPath: string;
   };
-  planReviewer: DefaultAgentState & {
+  planReviewerState: DefaultAgentState & {
     /**
      * Замечания для uiWorker'a, если какой-то информаци недостаточно
      */
@@ -28,18 +28,17 @@ export type AgentState = {
      */
     isApproved: boolean;
   };
-  coder: DefaultAgentState & {
+  coderState: DefaultAgentState & {
     /**
      * Запрос на сбор дополнительных данных для coder
      */
-    uiWorkerRequest: string;
+    // uiWorkerRequest: string;
     /**
-     * Итерация запроса к uiworker'у, чтобы остановить, если слишком много
+     * TODO: Итерация запроса к uiworker'у, чтобы остановить, если слишком много.
      */
     requestIteration: number;
-    isRequestSpecify: number;
   };
-  reviewer: DefaultAgentState & {
+  reviewerState: DefaultAgentState & {
     /**
      * Замечания по ревью
      */

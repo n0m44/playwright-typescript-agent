@@ -15,7 +15,7 @@ workflow
   .addEdge(AgentsRoles.PLANNER, AgentsRoles.UI_WORKER)
   .addEdge(AgentsRoles.UI_WORKER, AgentsRoles.PLAN_REVIEWER)
   .addConditionalEdges(AgentsRoles.PLAN_REVIEWER, (state) => {
-    if (state.planReviewer.isApproved) {
+    if (state.planReviewerState.isApproved) {
       return AgentsRoles.CODER;
     }
 
@@ -23,9 +23,11 @@ workflow
   })
   .addEdge(AgentsRoles.CODER, AgentsRoles.REVIEWER)
   .addConditionalEdges(AgentsRoles.REVIEWER, (state) => {
-    if (state.reviewer.isApproved) {
+    if (state.reviewerState.isApproved) {
       return END;
     }
 
     return AgentsRoles.CODER;
   });
+
+export default workflow;
