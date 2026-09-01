@@ -83,7 +83,8 @@ async function runUIWorker(state: AgentState) {
     logger.info(`[runUIWorker] Начинаем работу по промпту: ${state.plannerState.uiWorkerPrompt}`)
     state.uiWorkerState.messages.push(
       new HumanMessage(
-        state.plannerState.uiWorkerPrompt
+        state.plannerState.uiWorkerPrompt + "\n" +
+        promptsTemplates.backResultAt(UIWorkerResutlSchema)
       )
     );
   }
@@ -92,14 +93,6 @@ async function runUIWorker(state: AgentState) {
   state.uiWorkerState.messages = result.messages;
   const lastMsg = result.messages[result.messages.length - 1];
   state.uiWorkerState.jsonParseError = false;
-  // state.uiWorkerState.jsonParseError = false;
-
-  // const parseResult = UIWorkerResutlSchema.safeParse(lastMsg?.content);
-  // if (parseResult.error) {
-  //   logger.info(`[runUIWorker] Ошибка парсинга JSON, что прислал: ${lastMsg?.content}`)
-  //   state.uiWorkerState.jsonParseError = true;
-  //   return await runUIWorker(state);
-  // }
 
   try {
     const parseResult = UIWorkerResutlSchema.safeParse(JSON.parse(`${lastMsg?.content}`.replaceAll('\n', '')));
@@ -168,7 +161,8 @@ async function runCoder(state: AgentState) {
     logger.info(`[runCoder] Отрабатываем по ui-path: \n${state.uiWorkerState.coderUiPath}`)
     state.coderState.messages.push(
       new HumanMessage(
-        state.uiWorkerState.coderUiPath
+        state.plannerState.uiWorkerPrompt + "\n"
+        + state.uiWorkerState.coderUiPath
         + "\nРабочие каталоги" + getTargetAQADirPaths()
       )
     );

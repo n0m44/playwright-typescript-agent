@@ -7,7 +7,7 @@ import { AgentsRoles } from './types';
 
 const planner = createDeepAgent({
   model: getModel(),
-  tools: Object.values(tools),
+  // tools: Object.values(tools),
   backend: new FilesystemBackend({ rootDir: process.cwd() }),
   systemPrompt: loadPrompt('system', AgentsRoles.PLANNER),
   // skills: getSkillsPath(),
@@ -26,7 +26,7 @@ const planReviewer = createDeepAgent({
   tools: Object.values(tools),
   backend: new FilesystemBackend({ rootDir: process.cwd() }),
   systemPrompt: loadPrompt('system', AgentsRoles.PLAN_REVIEWER),
-  skills: getSkillsPath(),
+  // skills: getSkillsPath(),
 });
 
 const coder = createDeepAgent({
